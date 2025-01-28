@@ -1,0 +1,122 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Shipment Management API",
+    "description": "API for managing shipments.",
+    "contact": {}
+  },
+  "paths": {
+    "/api/shippment/update-status/{id}": {
+      "patch": {
+        "summary": "Update the status of a shipment",
+        "description": "This endpoint allows updating the status of an existing shipment.",
+        "tags": ["shippment"],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "ID of the shipment to update",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "status",
+            "description": "New status for the shipment",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "description": "Updated status of the shipment"
+                }
+              },
+              "required": ["status"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Shipment status updated successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                },
+                "shipment": {
+                  "$ref": "#/definitions/Shipment"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Shipment not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Shipment": {
+      "type": "object",
+      "properties": {
+        "shipmentID": {
+          "type": "string",
+          "description": "ID of the shipment"
+        },
+        "orderID": {
+          "type": "integer",
+          "description": "ID of the order"
+        },
+        "carrierID": {
+          "type": "integer",
+          "description": "ID of the carrier"
+        },
+        "state": {
+          "type": "string",
+          "description": "Current status of the shipment"
+        },
+        "dateAsignment": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Date when the shipment was assigned"
+        }
+      },
+      "required": ["state"]
+    }
+  }
+}
