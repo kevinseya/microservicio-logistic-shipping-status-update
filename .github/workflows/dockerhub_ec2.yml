@@ -44,21 +44,21 @@ jobs:
               sudo systemctl enable docker
             fi
 
-            # Bajar la imagen
+            # Download the image
             sudo docker pull kevinseya/logistic_shipment_update_status:latest
 
-            # Detener y eliminar contenedor anterior
+            # Stop and remove previous container
             sudo docker stop logistic_shipment_update_status || true
             sudo docker rm logistic_shipment_update_status || true
 
-            # Generar archivo .env con las variables secretas
+            # Generate .env file with secret variables
             echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
             echo "DB_USER=${{ secrets.DB_USER }}" >> .env
             echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
             echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
             echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
 
-            # Ejecutar nuevo contenedor
+            # Run new container
             sudo docker run -d --name logistic_shipment_update_status \
               --env-file .env \
               -p 6002:6002 \
