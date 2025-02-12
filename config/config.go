@@ -3,7 +3,7 @@ package config
 import (
 	"log"
 	"os"
-	"strconv" // Importar strconv para la conversión
+	"strconv" // Import strconv for conversion
 
 	"github.com/joho/godotenv"
 )
@@ -21,12 +21,12 @@ type Config struct {
 var AppConfig Config
 
 func LoadConfig() {
-	err := godotenv.Load() // Cargar las variables del archivo .env
+	err := godotenv.Load() // Load variables from the .env file
 	if err != nil {
 		log.Fatalf("Error loading .env file")
 	}
 
-	// Asignar las variables de entorno
+	// Assign environment variables
 	AppConfig.Database.Host = os.Getenv("DB_HOST")
 	AppConfig.Database.User = os.Getenv("DB_USER")
 	AppConfig.Database.Password = os.Getenv("DB_PASSWORD")
