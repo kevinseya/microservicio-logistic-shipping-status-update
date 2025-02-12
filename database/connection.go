@@ -16,7 +16,7 @@ var DB *gorm.DB
 func ConnectDB() {
 	cfg := config.AppConfig.Database
 
-	dsn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=enable",
+	dsn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=require",
 		cfg.Host, cfg.Port, cfg.User, cfg.Password, cfg.Name)
 
 	log.Printf("Connecting to PostgreSQL: %s\n", dsn)
