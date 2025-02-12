@@ -2,38 +2,42 @@ package config
 
 import (
 	"log"
-
 	"os"
+	"strconv" // Importar strconv para la conversión
 
-	"gopkg.in/yaml.v3"
+	"github.com/joho/godotenv"
 )
 
 type Config struct {
-	Server struct {
-		Port string `yaml:"port"`
-	} `yaml:"server"`
-
 	Database struct {
-		Host     string `yaml:"host"`
-		Port     int    `yaml:"port"`
-		User     string `yaml:"user"`
-		Password string `yaml:"password"`
-		Name     string `yaml:"name"`
+		Host     string `env:"DB_HOST"`
+		Port     int    `env:"DB_PORT"`
+		User     string `env:"DB_USER"`
+		Password string `env:"DB_PASSWORD"`
+		Name     string `env:"DB_NAME"`
 	} `yaml:"database"`
 }
 
 var AppConfig Config
 
 func LoadConfig() {
-	file, err := os.Open("config.yaml")
+	err := godotenv.Load() // Cargar las variables del archivo .env
 	if err != nil {
-		log.Fatalf("Error to open file of configuration: %v", err)
+		log.Fatalf("Error loading .env file")
 	}
-	defer file.Close()
 
-	decoder := yaml.NewDecoder(file)
-	if err := decoder.Decode(&AppConfig); err != nil {
-		log.Fatalf("Error to open file of configuration:: %v", err)
+	// Asignar las variables de entorno
+	AppConfig.Database.Host = os.Getenv("DB_HOST")
+	AppConfig.Database.User = os.Getenv("DB_USER")
+	AppConfig.Database.Password = os.Getenv("DB_PASSWORD")
+	AppConfig.Database.Name = os.Getenv("DB_NAME")
+
+	// Convertir DB_PORT de string a int
+	port, err := strconv.Atoi(os.Getenv("DB_PORT"))
+	if err != nil {
+		log.Fatalf("Error converting DB_PORT to int: %v", err)
 	}
-	log.Println("Configuration loaded succesfully.")
+	AppConfig.Database.Port = port
+
+	log.Println("Configuration loaded successfully.")
 }

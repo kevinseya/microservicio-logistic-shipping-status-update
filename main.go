@@ -29,9 +29,10 @@ func main() {
 
 	routes.SetupRoutes(router)
 
-	port := config.AppConfig.Server.Port
-	log.Printf("Microservice run on port:  %s", port)
-	if err := router.Run(fmt.Sprintf(":%s", port)); err != nil {
+	port := 6002
+	log.Printf("Microservice run on port:  %d", port)
+
+	if err := router.Run(fmt.Sprintf(":%d", port)); err != nil {
 		log.Fatalf("Error to initialize server: %v", err)
 	}
 }
